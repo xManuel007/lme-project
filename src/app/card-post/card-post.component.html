@@ -1,0 +1,59 @@
+<!-- src/app/card-post/card-post.component.html -->
+<div
+  class="duration-150 p-4 rounded-md bg-[#1f2937] hover:bg-[#242f3e] max-w-96 h-96 flex flex-col justify-between overflow-y-auto">
+  <div class="flex flex-col gap-2">
+    @if(showEditForm) {
+    <div class="mt-4">
+      <form [formGroup]="editForm" (ngSubmit)="onUpdate()" class="p-4 rounded shadow-md">
+        <div class="mb-4">
+          <label for="title" class="block text-gray-400 font-bold mb-2">Title</label>
+          <input formControlName="title" id="title" type="text"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        </div>
+        <div class="mb-4">
+          <label for="body" class="block text-gray-400 font-bold mb-2">Body</label>
+          <textarea formControlName="body" id="body"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+        </div>
+        <button type="submit" [disabled]="editForm.invalid"
+          class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          Update Post
+        </button>
+      </form>
+    </div>
+    }@else {
+    <div class="flex flex-row justify-between">
+      <div>
+        <h5 class="text-xl font-semibold text-gray-300">{{ title }}</h5>
+        <p class="text-sm text-gray-500">User ID: {{userId}} | Post ID: {{postId}}</p>
+      </div>
+      <div class="flex flex-row gap-2">
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white w-10 h-10 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2"
+          (click)="toggleEditForm()">
+          /
+        </button>
+        <button
+          class="bg-red-500 hover:bg-red-700 text-white w-10 h-10 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2"
+          (click)="onDelete()">
+          x
+        </button>
+      </div>
+    </div>
+    <p class="text-lg text-gray-400">{{ body }}</p>
+    }
+  </div>
+  <button class="bg-slate-500 hover:bg-slate-400 duration-150 rounded-md" (click)="toggleComments()">
+    {{ showComments ? 'Hide Comments' : 'Comments' }}
+  </button>
+  @if(showComments) {
+  <div class="mt-4">
+    @for(comment of comments; track comment.id) {
+    <div class="p-2 bg-[#2d3748] rounded-md mt-2">
+      <p class="text-sm text-gray-400"><strong>{{ comment.name }}</strong> ({{ comment.email }})</p>
+      <p class="text-sm text-gray-300">{{ comment.body }}</p>
+    </div>
+    }
+  </div>
+  }
+</div>
